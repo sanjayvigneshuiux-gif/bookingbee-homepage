@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* shadcn/ui theme tokens (BookingBee palette) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #ffffff;
+  --foreground: #190041;
+  --primary: #632dba;
+  --primary-foreground: #ffffff;
+  --secondary: #f3edff;
+  --secondary-foreground: #190041;
+  --muted: #f6f2fb;
+  --muted-foreground: #544a73;
+  --accent: #ffcd00;
+  --accent-foreground: #212529;
+  --destructive: #e5484d;
+  --destructive-foreground: #ffffff;
+  --border: #ece7f6;
+  --input: #ddd3f0;
+  --ring: #632dba;
+}
+
