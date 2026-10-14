@@ -14,7 +14,10 @@ const HERO_LOGOS = [
 ] as const
 
 type Cat = "booking" | "telephony" | "messaging"
-const PLATFORMS = [
+/** platforms that have their own integration page */
+export const PAGES: Record<string, string> = { Phorest: "#/integration-phorest" }
+
+export const PLATFORMS = [
   { logo: "lg-meevo", lw: 160, name: "Meevo", tags: ["Salon", "Spa", "Scheduling"], text: "Every call becomes a confirmed slot in Meevo, matched to the right stylist's real-time availability." },
   { logo: "lg-phorest", lw: 160, name: "Phorest", tags: ["Salon", "Spa", "Scheduling"], text: "BookingBee reads your Phorest services and schedules and fills open chairs day and night." },
   { logo: "lg-mindbody", lw: 160, name: "Mindbody", tags: ["Spa", "Wellness", "Scheduling"], text: "Treatments booked into Mindbody while your team stays with the client in the room." },
@@ -92,6 +95,7 @@ function Stories() {
   return (
     <section className="ip-stories" aria-labelledby="ip-stories-title">
       <div className="ip-story" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <span className="bb-pill"><i />Customer Stories</span>
         <h2 id="ip-stories-title">What Our Customers Says</h2>
         <div className="ip-story-body" key={i} aria-live="polite">
           <div className="ip-story-logo">{s.logo ? <img src={s.logo} alt={s.brand} /> : <span>{s.brand}</span>}</div>
@@ -131,6 +135,7 @@ export default function IntegrationsPage() {
       {/* ===== Hero ===== */}
       <section className="ip-hero" aria-labelledby="ip-title">
         <div className="ip-hero-text">
+          <span className="bb-pill"><i />Integrations</span>
           <h1 id="ip-title">Works with the <span>salon software </span>you already run on</h1>
           <img className="ip-redline" src={A + "redline.png"} alt="" width={770} height={12} />
           <p>BookingBee books straight into your calendar and answers your existing calls. Your front desk workflow stays the same, and your missed calls turn into appointments.</p>
@@ -147,7 +152,7 @@ export default function IntegrationsPage() {
       {/* ===== Scheduling integrations ===== */}
       <section className="ip-sched" id="ip-all" aria-labelledby="ip-sched-title">
         <div className="ip-intro">
-          <p className="ip-label">Your software. Connected.</p>
+          <span className="bb-pill"><i />Your software. Connected.</span>
           <h2 id="ip-sched-title">Books directly into your scheduling platform</h2>
           <p>BookingBee reads live availability and confirms every appointment back to the calendar your team already checks.</p>
         </div>
@@ -175,7 +180,9 @@ export default function IntegrationsPage() {
                 <h3>{p.name}</h3>
                 <ul className="ip-tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
                 <p>{p.text}</p>
-                <a className="ip-explore" href="#demo" data-open-demo="" data-demo-topic={p.name + " integration"}>Explore integration →</a>
+                {PAGES[p.name]
+                  ? <a className="ip-explore" href={PAGES[p.name]}>Explore integration →</a>
+                  : <a className="ip-explore" href="#demo" data-open-demo="" data-demo-topic={p.name + " integration"}>Explore integration →</a>}
               </article>
             ))}
           </div>
@@ -184,7 +191,7 @@ export default function IntegrationsPage() {
         {show("telephony") && (tele.length > 0 || sameNum) && (
           <div className="ip-group">
             <div className="ip-group-head">
-              <p className="ip-label">Telephony</p>
+              <span className="bb-pill"><i />Telephony</span>
               <h2>Answers on the phone line you already have.</h2>
               <p>Landline, mobile or VoIP, BookingBee picks up through simple call forwarding. No new number, no new hardware and no switching carriers.</p>
             </div>
@@ -212,7 +219,7 @@ export default function IntegrationsPage() {
         {show("messaging") && msg.length > 0 && (
           <div className="ip-group">
             <div className="ip-group-head">
-              <p className="ip-label">Messaging</p>
+              <span className="bb-pill"><i />Messaging</span>
               <h2>Every text and DMs, answered and booked.</h2>
               <p>SMS, website chat, Instagram, Facebook and WhatsApp. BookingBee replies in seconds and books straight into your calendar, so no message goes cold.</p>
             </div>
@@ -225,6 +232,7 @@ export default function IntegrationsPage() {
         <div className="ip-request">
           <img className="ip-request-bee" src={A + "cta-bee.webp"} alt="" width={497} height={431} loading="lazy" />
           <div className="ip-request-card">
+            <span className="bb-pill"><i />Request An Integration</span>
             <h2>Don’t see your software?</h2>
             <p>Tell us what you use. We add new integrations based on what salon owners ask for.</p>
             <a className="ip-btn-red" href="#demo" data-open-demo="" data-demo-topic="Integration request">Request an integration</a>
@@ -236,7 +244,7 @@ export default function IntegrationsPage() {
       {/* ===== What syncs ===== */}
       <section className="ip-split ip-sync" aria-labelledby="ip-sync-title">
         <div className="ip-split-txt">
-          <p className="ip-label">What Syncs</p>
+          <span className="bb-pill"><i />What Syncs</span>
           <h2 id="ip-sync-title">Your calendar stays the single source of truth</h2>
           <p>BookingBee never guesses. It checks your live schedule before offering a time, and every change it makes shows up in your software instantly.</p>
         </div>
@@ -247,7 +255,7 @@ export default function IntegrationsPage() {
       <section className="ip-split rev ip-phone" aria-labelledby="ip-phone-title">
         <img className="ip-split-vis" src={A + "phone-vis.webp"} alt="Linking your existing salon number and a call being redirected" width={579} height={514} loading="lazy" />
         <div className="ip-split-txt">
-          <p className="ip-label">One familiar number</p>
+          <span className="bb-pill"><i />One familiar number</span>
           <h2 id="ip-phone-title">Keep your number. Never miss a ring.</h2>
           <p>Clients call the same number they always have. You decide when BookingBee picks up.</p>
           <div className="ip-detail"><h3><Check />Forward your existing line</h3><p>Route calls from your current salon number to BookingBee. Clients notice nothing, except that someone always answers.</p></div>
@@ -258,7 +266,7 @@ export default function IntegrationsPage() {
       {/* ===== Omnichannel ===== */}
       <section className="ip-split ip-omni" aria-labelledby="ip-omni-title">
         <div className="ip-split-txt">
-          <p className="ip-label">Stay in the conversation</p>
+          <span className="bb-pill"><i />Stay in the conversation</span>
           <h2 id="ip-omni-title">Calls, texts and messages, all answered</h2>
           <p>Clients reach you however they like. BookingBee replies on the same channel and books into the same calendar.</p>
           <ul className="ip-benefits">
@@ -276,6 +284,7 @@ export default function IntegrationsPage() {
       {/* ===== FAQs ===== */}
       <section className="ip-faq" aria-labelledby="ip-faq-title">
         <div className="ip-faq-intro">
+          <span className="bb-pill"><i />FAQs</span>
           <h2 id="ip-faq-title">Integration questions, answered</h2>
           <p>Still unsure how BookingBee fits your setup? Our team can walk you through it.</p>
           <aside className="help-card">

@@ -24,6 +24,7 @@ export function FooterCta({ variant = "home" }: { variant?: "home" | "integratio
       <span className="fcta-glow r" aria-hidden="true" />
       {int ? (
         <div className="fcta-copy">
+          <span className="bb-pill"><i />Ready When You Are</span>
           <h2 id="fcta-int-title">Every call answered. Every appointment booked.</h2>
           <p>See BookingBee working with your software in a 15-minute demo.</p>
           <div className="fcta-btns">
@@ -33,6 +34,7 @@ export function FooterCta({ variant = "home" }: { variant?: "home" | "integratio
         </div>
       ) : (
         <div className="fcta-copy">
+          <span className="bb-pill"><i />Never Miss A Call</span>
           <h2 id="fcta-title">Even the world's best receptionist<br /><span>can handle only one call</span> at a time.</h2>
           <p>BookingBee handles multiple calls simultaneously, turning your front desk into a 24/7 booking engine.</p>
           <a className="fcta-btn" href="https://bookingbee.ai/schedule-a-demo" data-open-demo="">BOOK MY DEMO</a>

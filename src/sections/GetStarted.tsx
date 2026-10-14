@@ -1,204 +1,61 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
 /**
- * "Getting started — Live on your phones in 4 simple steps"
- * Figma: meevo-event-2026 · 2743:8310 (03 · Get started / Step 1 default).
- * Step 1 is built 1:1 from the frame; steps 2–4 reuse the same panel, tab and mockup system.
+ * "Getting started with your phones in 4 simple steps"
+ * Figma: Home-page-Re-design-FInal-Layout (NbdFRm4kfUKuq0nzPHHH26) · 09 · Getting started — 1*4 steps (v2), Step 8, 9, 10.
+ * Tabs sit on a dotted track; each step shows its own panel (badge, title, checklist, CTA) and the Figma visual.
  */
 
 const A = "public/assets/"
+const C = "currentColor"
 
-/* Tab icon glyphs (exact Figma paths). Rect + stroke colours switch with the active state in CSS. */
-const TAB_ICONS = [
-  { w: 30, h: 31, d: "M7 13H23M11 7V10M19 7V10M11 17H12M15 17H16M19 17H20M7 9H23V24H7V9Z", sw: 2, rx: 6 },
-  { w: 26, h: 33, d: "M10 7V12M16 7V12M13 21C16 21 19 19 19 16V12H7V16C7 19 10 21 13 21ZM13 21V26", sw: 1.8, rx: 10 },
-  { w: 30, h: 34, d: "M20 20C21 14 19 10 15 7C11 10 9 14 10 20M20 20H10M20 20L23 24L19 23M10 20L7 24L11 23M15 14V14.5M13 23L15 27L17 23", sw: 1.8, rx: 10 },
-  { w: 32, h: 31, d: "M7 24H25M10 20V15M15 20V10M20 20V13M25 20V7", sw: 1.8, rx: 10 },
+/* Tab glyphs exported from Figma (32×32 grid). Colour follows the tab state via currentColor. */
+const ICONS: ReactNode[] = [
+  <>
+    <rect x="4" y="8" width="24" height="20" rx="2" stroke={C} strokeWidth="2" />
+    <path d="M4 12C4 10.11 4 9.17 4.59 8.59C5.17 8 6.11 8 8 8H24C25.89 8 26.83 8 27.41 8.59C28 9.17 28 10.11 28 12V13.33H4V12Z" fill={C} />
+    <path d="M9.33 4V8M22.67 4V8" stroke={C} strokeWidth="2" strokeLinecap="round" />
+    <rect x="9.33" y="16" width="5.33" height="2.67" rx=".5" fill={C} /><rect x="9.33" y="21.33" width="5.33" height="2.67" rx=".5" fill={C} />
+    <rect x="17.33" y="16" width="5.33" height="2.67" rx=".5" fill={C} /><rect x="17.33" y="21.33" width="5.33" height="2.67" rx=".5" fill={C} />
+  </>,
+  <>
+    <path d="M6.67 16V5.33M25.33 26.67V24M6.67 26.67V21.33M25.33 16V5.33M16 9.33V5.33M16 26.67V16" stroke={C} strokeWidth="3" strokeLinecap="round" />
+    <circle cx="6.67" cy="18.67" r="2.67" stroke={C} strokeWidth="3" /><circle cx="16" cy="12" r="2.67" stroke={C} strokeWidth="3" /><circle cx="25.33" cy="20" r="2.67" stroke={C} strokeWidth="3" />
+  </>,
+  <path d="M3.35 4.74L5.97 2.12C7.14.95 9.04.95 10.21 2.12L12.7 4.62C13.87 5.79 13.87 7.69 12.7 8.86L10.61 10.95C10.11 11.45 9.99 12.22 10.3 12.86C12.15 16.54 15.13 19.52 18.81 21.36C19.45 21.68 20.22 21.56 20.72 21.05L22.81 18.96C23.98 17.79 25.88 17.79 27.05 18.96L29.55 21.46C30.72 22.63 30.72 24.53 29.55 25.7L26.93 28.32C24.81 30.43 21.47 30.67 19.08 28.88L12.4 23.87C10.66 22.56 9.11 21.01 7.8 19.27L2.79 12.58C1 10.2 1.23 6.85 3.35 4.74Z" fill={C} />,
+  <>
+    <path d="M10.67 13.33V21.33M16 16V21.33M21.33 10.67V21.33" stroke={C} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    <rect x="4" y="5.33" width="24" height="21.33" rx="2" stroke={C} strokeWidth="3" />
+  </>,
 ]
 
-function TabIcon({ i }: { i: number }) {
-  const g = TAB_ICONS[i]
-  return (
-    <svg className="gs-tab-ic" width={g.w} height={g.h} viewBox={`0 0 ${g.w} ${g.h}`} fill="none" aria-hidden="true">
-      <rect width={g.w} height={g.h} rx={g.rx} />
-      <path d={g.d} strokeWidth={g.sw} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-/* 58px panel tile: Step 1 uses the exact Figma tile; the others place the tab glyph on the same tile. */
-function Tile({ i }: { i: number }) {
-  if (i === 0)
-    return (
-      <svg width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true">
-        <rect width="58" height="58" rx="18" fill="#EEE7FA" />
-        <path d="M16 26.1111H42M22.5 16V21.7778M35.5 16V21.7778M22.5 31.8889H25.75M29 31.8889H32.25M35.5 31.8889H38.75M16 20.3333H42V42H16V20.3333Z" stroke="#632DBA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    )
-  const g = TAB_ICONS[i]
-  return (
-    <svg width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true">
-      <rect width="58" height="58" rx="18" fill="#EEE7FA" />
-      <g transform={`translate(${29 - g.w * 0.8} ${29 - g.h * 0.8}) scale(1.6)`}>
-        <path d={g.d} stroke="#632DBA" strokeWidth={g.sw / 1.4} strokeLinecap="round" strokeLinejoin="round" />
-      </g>
-    </svg>
-  )
-}
-
 const Check = () => (
-  <svg className="gs-check" width="20" height="19" viewBox="0 0 20 19" fill="none" aria-hidden="true">
-    <rect width="20" height="18.5" rx="9.25" fill="#E3F5EC" />
-    <path d="M5 9L8.5 12.5L15 6" stroke="#3BB581" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
+  <span className="gs2-check" aria-hidden="true">
+    <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4.2 3.7 6.8 9 1.2" stroke="#3BB581" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  </span>
 )
 
 const Arrow = () => (
-  <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <rect width="38" height="38" rx="19" fill="#FFC300" />
-    <path d="M14 24L24 14M24 21V14H17" stroke="#190041" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
+  <span className="gs2-arrow" aria-hidden="true">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 10.5 10.5 1.5M10.5 8.5v-7h-7" stroke="#190041" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  </span>
 )
 
-/* ---------------- Mockups ---------------- */
-
-const DAYS = [["Mon", 5], ["Tue", 6], ["Wed", 7], ["Thu", 8], ["Fri", 9]] as const
-const SLOTS = ["10:00 AM", "11:30 AM", "1:00 PM", "2:30 PM", "4:00 PM", "5:30 PM"]
-
-function BookMock() {
-  const [day, setDay] = useState(1)
-  const [slot, setSlot] = useState(1)
-  const d = DAYS[day]
-  return (
-    <div className="gs-mock">
-      <div className="gs-host">
-        <span className="gs-av"><img src={A + "bb-icon.png"} alt="" width={44} height={44} /></span>
-        <span><b>BookingBee live demo</b><small>20 min · Video call + live phone test</small></span>
-      </div>
-      <i className="gs-rule" />
-      <p className="gs-lbl">Pick a day · October</p>
-      <div className="gs-days" role="group" aria-label="Pick a day">
-        {DAYS.map(([w, n], k) => (
-          <button type="button" key={w} className={"gs-day" + (k === day ? " on" : "")} aria-pressed={k === day} onClick={() => setDay(k)}>
-            <small>{w}</small><b>{n}</b>
-          </button>
-        ))}
-      </div>
-      <p className="gs-lbl">Available times</p>
-      <div className="gs-slots" role="group" aria-label="Available times">
-        {SLOTS.map((t, k) => (
-          <button type="button" key={t} className={"gs-slot" + (k === slot ? " on" : "")} aria-pressed={k === slot} onClick={() => setSlot(k)}>{t}</button>
-        ))}
-      </div>
-      <button type="button" className="gs-confirm" data-open-demo="" data-demo-topic={`Live demo · ${d[0]}, Oct ${d[1]} · ${SLOTS[slot]}`}>
-        Confirm {d[0]}, Oct {d[1]} · {SLOTS[slot]}
-      </button>
-    </div>
-  )
-}
-
-const TOOLS = [
-  { name: "Meevo", sub: "Services, staff & hours", state: "Connected" },
-  { name: "Square", sub: "Payments & deposits", state: "Connected" },
-  { name: "Google Business", sub: "Hours & location", state: "Connected" },
-  { name: "Your salon voice", sub: "Warm · English + Español", state: "Choose" },
-]
-
-function SetupMock() {
-  return (
-    <div className="gs-mock">
-      <div className="gs-host">
-        <span className="gs-av"><img src={A + "bb-icon.png"} alt="" width={44} height={44} /></span>
-        <span><b>Setting up Aurora Hair &amp; Co</b><small>Done for you by your onboarding specialist</small></span>
-      </div>
-      <i className="gs-rule" />
-      <div className="gs-prog-row"><p className="gs-lbl">Setup progress</p><span className="gs-prog-val">3 of 4</span></div>
-      <div className="gs-prog"><i style={{ width: "75%" }} /></div>
-      <div className="gs-list">
-        {TOOLS.map((t) => (
-          <div className="gs-item" key={t.name}>
-            <span className="gs-item-ic">{t.name.charAt(0)}</span>
-            <span className="gs-item-tx"><b>{t.name}</b><small>{t.sub}</small></span>
-            <span className={"gs-tag" + (t.state === "Connected" ? " ok" : "")}>{t.state}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-const WHEN = ["After hours", "Overflow", "Always on"]
-
-function LiveMock() {
-  const [when, setWhen] = useState(0)
-  return (
-    <div className="gs-mock">
-      <div className="gs-host">
-        <span className="gs-av"><img src={A + "bb-icon.png"} alt="" width={44} height={44} /></span>
-        <span><b>Your salon line</b><small>(312) 555-0187 · keeps your number</small></span>
-      </div>
-      <i className="gs-rule" />
-      <p className="gs-lbl">When should Bee answer?</p>
-      <div className="gs-seg" role="group" aria-label="When should Bee answer">
-        {WHEN.map((w, k) => (
-          <button type="button" key={w} className={"gs-slot" + (k === when ? " on" : "")} aria-pressed={k === when} onClick={() => setWhen(k)}>{w}</button>
-        ))}
-      </div>
-      <div className="gs-switch-row">
-        <span className="gs-item-tx"><b>Call forwarding</b><small>Missed &amp; busy calls route to Bee</small></span>
-        <span className="gs-switch on" aria-hidden="true"><i /></span>
-      </div>
-      <p className="gs-lbl">First calls today</p>
-      <div className="gs-list">
-        <div className="gs-item"><span className="gs-item-ic y">SM</span><span className="gs-item-tx"><b>Sarah Miller</b><small>Balayage · Sat 2:00 PM</small></span><span className="gs-tag ok">Booked</span></div>
-        <div className="gs-item"><span className="gs-item-ic">JT</span><span className="gs-item-tx"><b>Jason Tran</b><small>“Are you open Sunday?”</small></span><span className="gs-tag">Answered</span></div>
-      </div>
-    </div>
-  )
-}
-
-const BARS = [38, 52, 46, 64, 58, 80, 72]
-
-function MonitorMock() {
-  return (
-    <div className="gs-mock">
-      <div className="gs-host">
-        <span className="gs-av"><img src={A + "bb-icon.png"} alt="" width={44} height={44} /></span>
-        <span><b>Weekly report</b><small>Oct 5 – Oct 11 · all locations</small></span>
-      </div>
-      <i className="gs-rule" />
-      <div className="gs-stats">
-        <div><small>Calls answered</small><b>212</b></div>
-        <div><small>Booked</small><b>64</b></div>
-        <div><small>Revenue</small><b>$4.8k</b></div>
-      </div>
-      <div className="gs-bars" aria-hidden="true">
-        {BARS.map((h, k) => <i key={k} style={{ height: h + "%" }} className={k === 5 ? "on" : ""} />)}
-      </div>
-      <div className="gs-days-lbl" aria-hidden="true">{["M", "T", "W", "T", "F", "S", "S"].map((x, k) => <span key={k}>{x}</span>)}</div>
-      <div className="gs-tip">
-        <span className="gs-item-tx"><b>Suggested tweak</b><small>Add gel removal price · asked 9×</small></span>
-        <span className="gs-tag ok">Apply</span>
-      </div>
-    </div>
-  )
-}
-
-type Step = { tab: string; title: string; lead: string; points: string[]; toast: string; mock: ReactNode }
+type Step = { tab: string; lead: string; points: string[]; cta: string; href: string; demo?: boolean; img: string; alt: string }
 
 const STEPS: Step[] = [
-  { tab: "Book a demo", title: "Book a demo", lead: "See how BookingBee handles a real call for your salon’s services.",
+  { tab: "Book a demo", lead: "See how BookingBee handles a real call for your salon’s services.",
     points: ["A live call using your own service menu", "Tailored to salons, spas, med spas or barbershops", "Pricing and plan fit, answered on the spot"],
-    toast: "New demo slots open this week", mock: <BookMock /> },
-  { tab: "Quick setup", title: "Quick setup", lead: "We load your services, staff and hours and connect the tools you already use.",
-    points: ["Services, prices and staff imported for you", "Connects to Meevo, Square, Phorest and more", "Pick a voice and greeting that sounds like you"],
-    toast: "Most salons are set up in a day", mock: <SetupMock /> },
-  { tab: "Go live", title: "Go live", lead: "Forward your existing number and Bee starts answering, no new phone line needed.",
-    points: ["Keep your salon number, just forward calls", "Choose after hours, overflow or always on", "Bookings land straight in your calendar"],
-    toast: "Bee is live on your line", mock: <LiveMock /> },
-  { tab: "Monitor & refine", title: "Monitor & refine", lead: "Every call is summarised, and your weekly report shows what Bee booked for you.",
-    points: ["Call summaries and full transcripts", "Weekly bookings and revenue report", "We fine-tune answers as your menu changes"],
-    toast: "Your weekly report is ready", mock: <MonitorMock /> },
+    cta: "Book a demo", href: "#demo", demo: true, img: "gs2-1.webp", alt: "Booking a 30-minute BookingBee product demo: pick Tue, Oct 6 at 11:30 AM" },
+  { tab: "Quick setup", lead: "We connect BookingBee to your booking software and phone line, so it knows your salon from day one.",
+    points: ["Connects to your booking software in minutes", "Services, stylists and prices imported for you", "Keep your number, just forward your calls"],
+    cta: "See integrations", href: "#/integrations", img: "gs2-2.webp", alt: "Setup progress: booking software connected, 42 services and 6 stylists imported, call forwarding in progress" },
+  { tab: "Go live", lead: "Your AI receptionist starts answering every call, day or night, and books straight into your calendar.",
+    points: ["Answers every call, 24/7, in your salon’s voice", "Books, reschedules and cancels for you", "Texts clients a confirmation instantly"],
+    cta: "Hear a sample call", href: "#live-demo", img: "gs2-3.webp", alt: "Incoming call answered by BookingBee with a live transcript and a confirmation text" },
+  { tab: "Monitor & refine", lead: "Track every call and booking in one dashboard, and fine-tune how BookingBee answers as your salon grows.",
+    points: ["Call summaries and recordings in one place", "See bookings and revenue captured", "Update answers, hours and services anytime"],
+    cta: "See the dashboard", href: "#demo", demo: true, img: "gs2-4.webp", alt: "BookingBee call history dashboard with 4x ROI, $6,202 revenue managed and after-hours handling on" },
 ]
 
 export default function GetStarted() {
@@ -238,51 +95,41 @@ export default function GetStarted() {
   const num = String(active + 1).padStart(2, "0")
 
   return (
-    <section className="gs" id="get-started" aria-labelledby="gs-title" ref={secRef}>
-      <div className="gs-inner">
-        <div className="gs-head">
-          <div className="gs-heading">
-            <span className="gs-eyebrow">GETTING STARTED</span>
-            <h2 id="gs-title">Live on your phones<br />in <em>4 simple</em> steps</h2>
-          </div>
-          <p className="gs-intro">From first demo to a fully answering front desk in days. We do the heavy lifting, you stay with your clients.</p>
-        </div>
+    <section className="gs2" id="get-started" aria-labelledby="gs2-title" ref={secRef}>
+      <div className="gs2-head">
+        <span className="bb-pill"><i />How It Works</span>
+        <h2 id="gs2-title">Getting started with your phones<br />in <em>4 simple</em> steps</h2>
+        <p>From first demo to a fully answering front desk in days. We do the heavy lifting, you stay with your clients.</p>
+      </div>
 
-        <div className="gs-tabs" role="tablist" aria-label="Getting started steps" onKeyDown={onKey}>
-          {STEPS.map((st, i) => (
+      <div className="gs2-tabs" role="tablist" aria-label="Getting started steps" onKeyDown={onKey}>
+        {STEPS.map((st, i) => (
+          <div className="gs2-tab-slot" key={st.tab}>
+            {i > 0 && <i className={"gs2-link" + (i <= active ? " done" : "")} aria-hidden="true" />}
             <button
-              key={st.tab} type="button" role="tab" id={`gs-tab-${i}`} aria-controls="gs-panel" aria-selected={i === active} tabIndex={i === active ? 0 : -1}
-              ref={(n) => { tabRefs.current[i] = n }} className={"gs-tab" + (i === active ? " on" : "")} onClick={() => pick(i)}
+              type="button" role="tab" id={`gs2-tab-${i}`} aria-controls="gs2-panel" aria-selected={i === active} tabIndex={i === active ? 0 : -1}
+              ref={(n) => { tabRefs.current[i] = n }} className={"gs2-tab" + (i === active ? " on" : "")} onClick={() => pick(i)}
             >
-              <TabIcon i={i} />
-              <span className="gs-tab-n">{String(i + 1).padStart(2, "0")}</span>
-              <span className="gs-tab-t">{st.tab}</span>
+              <span className="gs2-ic"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true">{ICONS[i]}</svg></span>
+              <span className="gs2-n">{String(i + 1).padStart(2, "0")}</span>
+              <span className="gs2-t">{st.tab}</span>
             </button>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="gs-panel" id="gs-panel" role="tabpanel" aria-labelledby={`gs-tab-${active}`}>
-          <div className="gs-content" key={"c" + active}>
-            <Tile i={active} />
-            <div className="gs-text">
-              <p className="gs-step">STEP {num}</p>
-              <h3>{s.title}</h3>
-              <p className="gs-lead">{s.lead}</p>
-            </div>
-            <ul className="gs-points">
-              {s.points.map((p) => <li key={p}><Check />{p}</li>)}
-            </ul>
-            <div className="gs-cta-wrap">
-              <a className="gs-cta" href="#demo" data-open-demo="" data-demo-topic={`Getting started · ${s.tab}`}>Book a demo<Arrow /></a>
-            </div>
-          </div>
-          <div className="gs-visual" aria-hidden={false}>
-            <i className="gs-blob b0" /><i className="gs-blob b1" /><i className="gs-blob b2" /><i className="gs-blob b3" />
-            <div className="gs-mock-wrap" key={"m" + active}>
-              {s.mock}
-              <span className="gs-toast"><i />{s.toast}</span>
-            </div>
-          </div>
+      <div className="gs2-panel" id="gs2-panel" role="tabpanel" aria-labelledby={`gs2-tab-${active}`}>
+        <div className="gs2-content" key={"c" + active}>
+          <span className="gs2-badge">STEP {num}</span>
+          <h3>{s.tab}</h3>
+          <p className="gs2-lead">{s.lead}</p>
+          <ul className="gs2-points">{s.points.map((p) => <li key={p}><Check />{p}</li>)}</ul>
+          <a className="gs2-cta" href={s.href} {...(s.demo ? { "data-open-demo": "", "data-demo-topic": `Getting started · ${s.tab}` } : {})}>{s.cta}<Arrow /></a>
+        </div>
+        <div className="gs2-visual">
+          {STEPS.map((st, i) => (
+            <img key={st.img} className={i === active ? "on" : ""} src={A + st.img} alt={i === active ? st.alt : ""} aria-hidden={i !== active} width={640} height={600} loading="lazy" />
+          ))}
         </div>
       </div>
     </section>

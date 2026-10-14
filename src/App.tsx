@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import IntegrationsPage from "./sections/IntegrationsPage"
+import PhorestPage from "./sections/PhorestPage"
+import GradientBlinds from "@/components/ui/gradient-blinds"
 import TrustedSection from "./sections/Trusted"
 import VoicePopup from "./sections/VoicePopup"
 import FeatureScroller from "./sections/FeatureScroller"
@@ -20,16 +22,19 @@ export default function App() {
 
   /* Tiny hash router: #/integrations opens the Integrations page (Figma 3052:5014).
      Anchors inside the current view (#demo, #ip-all…) keep the view; any other anchor returns home. */
-  const routeFor = (prev: "home" | "int") => {
+  type Route = "home" | "int" | "phorest"
+  const routeFor = (prev: Route): Route => {
     const h = location.hash
+    if (h.startsWith("#/integration-phorest")) return "phorest"
     if (h.startsWith("#/integrations")) return "int"
     if (!h || h === "#top") return "home"
     if (h === "#demo") return prev
     const el = document.getElementById(h.slice(1))
     if (el && el.closest("#integrations-page")) return "int"
+    if (el && el.closest("#integration-phorest")) return "phorest"
     return "home"
   }
-  const [route, setRoute] = useState<"home" | "int">(() => (location.hash.startsWith("#/integrations") ? "int" : "home"))
+  const [route, setRoute] = useState<Route>(() => (location.hash.startsWith("#/integration-phorest") ? "phorest" : location.hash.startsWith("#/integrations") ? "int" : "home"))
   useEffect(() => {
     const onHash = () => setRoute((prev) => {
       const next = routeFor(prev)
@@ -48,8 +53,10 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
   useEffect(() => {
-    document.title = route === "int" ? "Integrations | BookingBee AI Receptionist" : document.title.replace(/^Integrations \| BookingBee AI Receptionist$/, "BookingBee")
-    document.body.classList.toggle("route-int", route === "int")
+    const home = (window as unknown as { __bbTitle?: string })
+    home.__bbTitle ??= document.title
+    document.title = route === "int" ? "Integrations | BookingBee AI Receptionist" : route === "phorest" ? "Phorest Integration | AI Receptionist for Phorest | BookingBee" : home.__bbTitle
+    document.body.classList.toggle("route-int", route !== "home")
   }, [route])
 
   return (
@@ -93,31 +100,26 @@ export default function App() {
         </div>
       </header>
 
-      <main hidden={route === "int"}>
-      {/* ============ HERO ============ */}
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-stage">
-          <h1 className="hero-title" id="hero-title"><span className="hash">#</span><span className="one">1</span> Voice AI Receptionist for Beauty Salons</h1>
-          <p className="hero-sub">Whether you run a salon, spa, med spa, or barbershop, it never misses a client call and keeps your bookings flowing smoothly</p>
-          <div className="hero-ctas">
-            <a className="btn-pill btn-orange" href="#demo" data-open-demo="">Book My Free Demo</a>
-            <a className="btn-pill btn-ghost" href="#features">See How It Works </a>
+      <main hidden={route !== "home"}>
+      {/* ============ HERO (Figma NbdFRm4kfUKuq0nzPHHH26 · 118:4450) ============ */}
+      <section className="hero2" aria-labelledby="hero-title">
+        {/* interactive light-through-blinds backdrop (React Bits · GradientBlinds) in the BookingBee navy → purple */}
+        <GradientBlinds className="hero2-blinds" gradientColors={["#5227FF", "#632DBA", "#B78BFF"]} angle={20} blindCount={16} blindMinWidth={60}
+          spotlightRadius={0.7} spotlightOpacity={0.6} lightColor="#e4d4ff" shine={0.45} relief={0.5} glow={0.5}
+          sway={0.35} hoverTilt={0.6} clickEffect="ripple" noise={0.22} mirrorGradient dpr={1.5} />
+        <div className="hero2-copy">
+          <span className="bb-pill"><i />AI Receptionist for Salons &amp; Spas</span>
+          <h1 id="hero-title"><span className="y">#1</span> Voice AI Receptionist for <span className="l">Beauty Salons &amp; Spas</span></h1>
+          <p>Whether you run a salon, spa, med spa, or barbershop, it never misses a client call and keeps your bookings flowing smoothly.</p>
+          <div className="hero2-ctas">
+            <a className="hero2-btn" href="#demo" data-open-demo="">Book a Demo</a>
+            <a className="hero2-btn ghost" href="#features">See How it works</a>
           </div>
-
-          <span className="hero-ring r2" aria-hidden="true"></span>
-          <span className="hero-ring r1" aria-hidden="true"></span>
-
-          <div className="hero-figures">
-            <img className="hero-bee float-y" src="public/assets/hero-bee.webp" alt="BookingBee robot bee mascot" width="443" height="625" />
-            <img className="hero-girl" src="public/assets/hero-girl.webp" alt="Salon client calling to book an appointment" width="380" height="444" />
-          </div>
-
-          <div className="hero-chat" aria-label="Example call with BookingBee">
-            <div className="bubble bee b1"><span className="avatar-slot"></span><p>Hello! Bella Salon's AI receptionist. How can I help you today? </p></div>
-            <div className="bubble client b2"><p>I'd like a haircut and balayage this Friday... around afternoon! </p><span className="avatar-slot"></span></div>
-            <div className="bubble bee b3"><span className="avatar-slot"></span><p>Sure! I have 2:30 PM or 4:00 PM with Emma. Which works for you? </p></div>
-            <div className="bubble client b4"><p>2:30 PM works for me. </p><span className="avatar-slot"></span></div>
-          </div>
+        </div>
+        <div className="hero2-room" role="img" aria-label="BookingBee's robot bee receptionist answering a call at a salon front desk">
+          <span className="hero2-voice" aria-hidden="true">
+            {[3, 3.73, 3.27, 5.55, 12.16, 8.42, 15.75, 14.9, 23.38, 42.41, 25.63, 29.85, 41.25, 45.1, 67.5, 36.31, 38.36, 52.9, 40.35, 48.81, 23.63, 29.4, 31.27, 17, 15.86, 8.51, 10, 8.49, 3.44, 3, 3].map((h, i) => <i key={i} style={{ height: `${(h / 67.5) * 100}%`, animationDelay: `${(i % 7) * -0.17}s`, opacity: 0.38 + 0.62 * (1 - Math.abs(i - 15) / 15) }} />)}
+          </span>
         </div>
       </section>
 
@@ -136,7 +138,7 @@ export default function App() {
         <div className="handle-scroller" id="handle-scroller"><div className="handle" id="handle">
           <div className="handle-stage">
             <div className="handle-head">
-              <p className="eyebrow">WHAT BOOKINGBEE HANDLES</p>
+              <span className="bb-pill"><i />What BookingBee Handles</span>
               <h2>Built to handle the whole front desk.</h2>
               <p className="lead">Not just bookings. Everything your front desk juggles between clients: late-night calls, second locations, languages, and the questions nobody writes down.</p>
             </div>
@@ -240,6 +242,7 @@ export default function App() {
           <div className="int-card">
             <div className="int-row">
               <div className="int-text">
+                <span className="bb-pill"><i />Integrations</span>
                 <h2 id="int-title">Integrations</h2>
                 <p>Integrate BookingBee.ai with your existing apps, whether it's for payments, appointments, or social media. As long as there's an open API available, we'll take care of the integration for you.</p>
                 <div className="int-btn-wrap"><a className="btn-dark int-explore" href="#/integrations">Explore all integrations →</a><a className="btn-outline" href="#demo" data-open-demo="" data-demo-topic="Integration request">Request yours - We'll build it →</a></div>
@@ -253,6 +256,7 @@ export default function App() {
       {/* ============ BEFORE / AFTER ============ */}
       <section className="swipe" id="how-it-works" aria-labelledby="swipe-title">
         <div className="swipe-head reveal">
+          <span className="bb-pill"><i />Before &amp; After</span>
           <h2 id="swipe-title">Swipe to See the Difference in <span>Daily Salon Life</span></h2>
           <p>See how our AI receptionist for beauty salons works</p>
         </div>
@@ -292,6 +296,7 @@ export default function App() {
       {/* ============ FAQ ============ */}
       <section className="faq" id="faq" aria-labelledby="faq-title">
         <div className="faq-inner">
+          <span className="bb-pill"><i />FAQs</span>
           <h2 id="faq-title">BookingBee FAQs</h2>
           <div className="faq-grid">
             <aside className="help-card">
@@ -334,6 +339,10 @@ export default function App() {
 
       {route === "int" && (<>
         <IntegrationsPage />
+        <FooterCta variant="integrations" />
+      </>)}
+      {route === "phorest" && (<>
+        <PhorestPage />
         <FooterCta variant="integrations" />
       </>)}
 

@@ -57,6 +57,7 @@ export default function ReviewsSection() {
     <section className="reviews" id="stories" aria-labelledby="reviews-title">
       <div className="reviews-inner">
         <div className="reviews-head reveal">
+          <span className="bb-pill"><i />Customer Stories</span>
           <h2 id="reviews-title">What Our Customers Say</h2>
           <p>Real stories from salon owners who transformed their business with BookingBee</p>
         </div>

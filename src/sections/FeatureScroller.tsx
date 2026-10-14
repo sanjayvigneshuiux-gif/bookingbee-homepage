@@ -16,49 +16,49 @@ const FEATURES: Feature[] = [
   {
     key: "voice", title: "AI Voice Receptionist", voice: true,
     desc: "Answers every call, books appointments and handles FAQs naturally.",
-    img: "feat-voice.webp", alt: "Incoming call from Sarah Miller answered by BookingBee",
+    img: "feat2-voice.webp", alt: "Salon client on a call answered by the BookingBee AI receptionist",
     icon: <Icon><path {...P} d="M18.3332 14.0994V16.5994C18.3341 16.8315 18.2866 17.0612 18.1936 17.2739C18.1006 17.4865 17.9643 17.6774 17.7933 17.8343C17.6222 17.9912 17.4203 18.1107 17.2005 18.185C16.9806 18.2594 16.7477 18.287 16.5165 18.2661C13.9522 17.9875 11.489 17.1112 9.32486 15.7078C7.31139 14.4283 5.60431 12.7212 4.32486 10.7078C2.91651 8.53377 2.04007 6.05859 1.76653 3.48276C1.7457 3.25232 1.77309 3.02006 1.84695 2.80078C1.9208 2.5815 2.03951 2.38 2.1955 2.20911C2.3515 2.03822 2.54137 1.90169 2.75302 1.8082C2.96468 1.71471 3.19348 1.66631 3.42486 1.6661H5.92486C6.32928 1.66212 6.72136 1.80533 7.028 2.06904C7.33464 2.33275 7.53493 2.69897 7.59153 3.09943C7.69705 3.89949 7.89274 4.68504 8.17486 5.4411C8.28698 5.73937 8.31125 6.06353 8.24478 6.37516C8.17832 6.6868 8.02392 6.97286 7.79986 7.19943L6.74153 8.25776C7.92783 10.3441 9.65524 12.0715 11.7415 13.2578L12.7999 12.1994C13.0264 11.9754 13.3125 11.821 13.6241 11.7545C13.9358 11.688 14.2599 11.7123 14.5582 11.8244C15.3143 12.1066 16.0998 12.3022 16.8999 12.4078C17.3047 12.4649 17.6744 12.6688 17.9386 12.9807C18.2029 13.2926 18.3433 13.6907 18.3332 14.0994Z" /></Icon>,
   },
   {
     key: "chatbot", title: "Website AI Chatbot",
     desc: "Converts website visitors into booked appointments, 24/7.",
-    img: "feat-chatbot.webp", alt: "BookingBee website chat widget offering to book an appointment",
+    img: "feat2-chatbot.webp", alt: "BookingBee website chat widget offering to book an appointment",
     icon: <Icon><path {...P} d="M9.99984 18.3327C14.6022 18.3327 18.3332 14.6017 18.3332 9.99935C18.3332 5.39698 14.6022 1.66602 9.99984 1.66602C5.39746 1.66602 1.6665 5.39698 1.6665 9.99935C1.6665 14.6017 5.39746 18.3327 9.99984 18.3327Z" /><path {...P} d="M6.6665 9.99935C6.6665 6.89663 7.86003 3.91281 9.99984 1.66602C12.1396 3.91281 13.3332 6.89663 13.3332 9.99935C13.3332 13.1021 12.1396 16.0859 9.99984 18.3327C7.86003 16.0859 6.6665 13.1021 6.6665 9.99935Z" /><path {...P} d="M1.6665 10H18.3332" /></Icon>,
   },
   {
     key: "text-automation", title: "Social Media Automation",
     desc: "Replies to Instagram, Facebook and WhatsApp DMs and turns followers into booked clients.",
-    img: "feat-text-automation.webp", alt: "Instagram DM conversation booking a Saturday appointment",
+    img: "feat2-text-automation.webp", alt: "Instagram DM conversation booking a Saturday appointment",
     icon: SocialIcon,
   },
   {
     key: "texting", title: "SMS Texting",
     desc: "Books, reschedules and answers questions over SMS like a front desk.",
-    img: "feat-texting.webp", alt: "SMS thread rescheduling an appointment to Wednesday",
+    img: "feat2-texting.webp", alt: "SMS thread rescheduling an appointment to Wednesday",
     icon: SmsIcon,
   },
   {
     key: "email", title: "Email Notifications",
     desc: "Branded confirmations, reminders and thank-you notes land in every inbox automatically.",
-    img: "feat-email.webp", alt: "Inbox with a BookingBee appointment confirmation email",
+    img: "feat2-email.webp", alt: "Happy stylist next to a BookingBee appointment confirmation email",
     icon: <Icon><g transform="translate(1.667 3.334)"><path {...P} d="M 1.666666603088379 0 L 14.99999942779541 0 C 15.920474021289522 0 16.66666603088379 0.7461920202686301 16.66666603088379 1.6666666269302368 L 16.66666603088379 11.666666388511658 C 16.66666603088379 12.587140995173264 15.920474021289522 13.333333015441895 14.99999942779541 13.333333015441895 L 1.666666603088379 13.333333015441895 C 0.7461920095942673 13.333333015441895 0 12.587140995173264 0 11.666666388511658 L 0 1.6666666269302368 C 0 0.7461920202686301 0.7461920095942673 0 1.666666603088379 0 Z" /></g><g transform="translate(1.667 5.834)"><path {...P} d="M 16.66666603088379 0 L 9.191666093508411 4.749999689955391 C 8.934392488916036 4.911187991735757 8.636930404446383 4.99667549133301 8.333333015441895 4.996675491333008 C 8.029735626437406 4.99667549133301 7.732273541967754 4.911187991735757 7.474999937375379 4.749999689955391 L 0 0" /></g></Icon>,
   },
   {
     key: "reminders", title: "Smart Reminders",
     desc: "Automated SMS and email nudges that keep chairs full and no-shows low.",
-    img: "feat-reminders.webp", alt: "Reminder notifications and a client confirmed badge",
+    img: "feat2-reminders.webp", alt: "Reminder notifications and a client confirmed badge",
     icon: RemindersIcon,
   },
   {
     key: "winback", title: "Client Win-Back",
     desc: "Reaches out to lapsed clients and turns empty slots into rebookings.",
-    img: "feat-winback.webp", alt: "Win-back text offering a Thursday opening and the client rebooking",
+    img: "feat2-winback.webp", alt: "Win-back text offering a Thursday opening and the client rebooking",
     icon: <Icon><g transform="translate(2.5 2.5)"><path {...P} d="M 0 7.5 C 1.1102230246251565e-15 8.983359833558401 0.43986747662226366 10.433407723903658 1.2639780839284263 11.666776339213055 C 2.0880886912345886 12.900144954522451 3.2594284415245056 13.861439923445383 4.629874229431152 14.429097175598145 C 6.000320017337799 14.996754427750906 7.508319715658823 15.145279417435328 8.96317720413208 14.855890274047852 C 10.418034692605337 14.566501130660376 11.75440639257431 13.852194050947826 12.803300221761068 12.803300221761068 C 13.852194050947826 11.75440639257431 14.566501130660376 10.418034692605337 14.855890274047852 8.96317720413208 C 15.145279417435328 7.508319715658823 14.996754427750906 6.000320017337799 14.429097175598145 4.629874229431152 C 13.861439923445383 3.2594284415245056 12.900144954522451 2.0880886912345886 11.666776339213055 1.2639780839284263 C 10.433407723903658 0.43986747662226366 8.983359833558401 -1.1102230246251565e-15 7.5 0 C 5.4032933712005615 0.007887583536406359 3.3908077081044516 0.8260195453961692 1.8833335240681968 2.28333314259847 L 0 4.166666666666667" /></g><g transform="translate(2.5 2.5)"><path {...P} d="M 0 0 L 0 4.166666507720947 L 4.166666507720947 4.166666507720947" /></g><g transform="translate(10 5.834)"><path {...P} d="M 0 0 L 0 4.166666439601353 L 2.5 5.8333330154418945" /></g></Icon>,
   },
   {
     key: "calendar", title: "Calendar Sync",
     desc: "Every booking lands straight in your salon software — no double entry.",
-    img: "feat-calendar.webp", alt: "Salon calendar with bookings synced live by BookingBee",
+    img: "feat2-calendar.webp", alt: "Salon calendar with bookings synced live by BookingBee",
     icon: CalendarIcon,
   },
 ]
@@ -205,7 +205,7 @@ export default function FeatureScroller() {
     <div className="fs" ref={fsRef} aria-labelledby="fs-title">
       <div className="fs-head">
         <div className="fs-heading">
-          <p className="fs-eyebrow">WHAT BOOKINGBEE DOES</p>
+          <span className="bb-pill"><i />What BookingBee Does</span>
           <h2 id="fs-title">One AI front desk,<br />every channel your clients use</h2>
         </div>
         <div className="fs-arrows">
